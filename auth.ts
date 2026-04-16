@@ -1,14 +1,13 @@
-import { AuthOptions } from "next-auth"
-import CredentialsProvider from "next-auth/providers/credentials"
+import NextAuth from "next-auth"
+import Credentials from "next-auth/providers/credentials"
 import { eq } from "drizzle-orm"
 import bcrypt from "bcryptjs"
-import { db } from "../db"
-import { users } from "../db/schema"
+import { db } from "./db"
+import { users } from "./db/schema"
 
-export const authOptions: AuthOptions = {
+export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
-    CredentialsProvider({
-      name: "Credentials",
+    Credentials({
       credentials: {
         username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
@@ -19,7 +18,7 @@ export const authOptions: AuthOptions = {
         }
 
         const user = await db.query.users.findFirst({
-          where: eq(users.username, credentials.username),
+          where: eq(users.username, credentials.username as string),
         })
 
         if (!user || !user.passwordHash) {
@@ -27,7 +26,7 @@ export const authOptions: AuthOptions = {
         }
 
         const isValid = await bcrypt.compare(
-          credentials.password,
+          credentials.password as string,
           user.passwordHash,
         )
 
@@ -49,5 +48,4 @@ export const authOptions: AuthOptions = {
   session: {
     strategy: "jwt",
   },
-  secret: process.env.NEXTAUTH_SECRET,
-}
+})

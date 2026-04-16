@@ -1,11 +1,10 @@
-import { getServerSession } from "next-auth"
+import { auth } from "@/auth"
 import { eq } from "drizzle-orm"
-import { authOptions } from "../../lib/auth"
 import { db } from "../../db"
 import { users } from "../../db/schema"
 
 export const getCurrentUser = async () => {
-  const session = await getServerSession(authOptions)
+  const session = await auth()
   if (!session?.user?.email) {
     return null
   }
