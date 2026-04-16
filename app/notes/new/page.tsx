@@ -1,7 +1,7 @@
 "use client"
 
 import { useActionState } from "react"
-import { createNote } from "../../actions/notes"
+import { createNote } from "@/app/actions/notes"
 
 const NewNote = () => {
   const [state, formAction] = useActionState(createNote, { error: "" })
