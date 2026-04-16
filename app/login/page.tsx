@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useNotification } from "../components/NotificationContext"
+import FormField from "../components/FormField"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -31,26 +32,24 @@ export default function LoginPage() {
   }
 
   return (
-    <div>
-      <h2>Login</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>
-            Username
-            <input type="text" name="username" required />
-          </label>
-        </div>
-        <div>
-          <label>
-            Password
-            <input type="password" name="password" required />
-          </label>
-        </div>
-        <button type="submit">Login</button>
+    <div className="max-w-md mx-auto p-6">
+      <h2 className="text-2xl font-bold mb-4">Login</h2>
+      {error && <p className="text-red-600 mb-4">{error}</p>}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <FormField label="Username" name="username" required />
+        <FormField label="Password" name="password" type="password" required />
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          Login
+        </button>
       </form>
-      <p>
-        Don&apos;t have an account? <Link href="/register">Register</Link>
+      <p className="mt-4">
+        Don&apos;t have an account?{" "}
+        <Link href="/register" className="text-blue-600 hover:underline">
+          Register
+        </Link>
       </p>
     </div>
   )

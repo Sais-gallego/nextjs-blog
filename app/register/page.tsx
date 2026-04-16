@@ -4,6 +4,7 @@ import { useActionState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { registerUser } from "../actions/users"
 import { useNotification } from "../components/NotificationContext"
+import FormField from "../components/FormField"
 
 export default function RegisterPage() {
   const [state, formAction] = useActionState(registerUser, {
@@ -21,29 +22,19 @@ export default function RegisterPage() {
   }, [state, showNotification, router])
 
   return (
-    <div>
-      <h2>Register</h2>
-      <form action={formAction}>
-        <div>
-          <label>
-            Username
-            <input type="text" name="username" required />
-          </label>
-        </div>
-        <div>
-          <label>
-            Name
-            <input type="text" name="name" required />
-          </label>
-        </div>
-        <div>
-          <label>
-            Password
-            <input type="password" name="password" required />
-          </label>
-        </div>
-        <button type="submit">Register</button>
-        {state.error && <p style={{ color: "red" }}>{state.error}</p>}
+    <div className="max-w-md mx-auto p-6">
+      <h2 className="text-2xl font-bold mb-4">Register</h2>
+      <form action={formAction} className="space-y-4">
+        <FormField label="Username" name="username" required />
+        <FormField label="Name" name="name" required />
+        <FormField label="Password" name="password" type="password" required />
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          Register
+        </button>
+        {state.error && <p className="text-red-600">{state.error}</p>}
       </form>
     </div>
   )
