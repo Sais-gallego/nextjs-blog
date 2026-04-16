@@ -21,23 +21,32 @@ const NewNote = () => {
   }, [state, showNotification, router])
 
   return (
-    <div>
-      <h2>Create a new note</h2>
-      <form action={formAction}>
+    <div className="max-w-2xl mx-auto p-6">
+      <h2 className="text-2xl font-bold mb-4">Create a new note</h2>
+      <form action={formAction} className="space-y-4">
         <div>
-          <label>
+          <label className="block mb-1 font-medium">
             Content
-            <input type="text" name="content" />
+            <input
+              type="text"
+              name="content"
+              className="mt-1 block w-full border rounded px-3 py-2"
+            />
           </label>
         </div>
         <div>
-          <label>
-            <input type="checkbox" name="important" />
+          <label className="flex items-center gap-2">
+            <input type="checkbox" name="important" className="rounded" />
             Important
           </label>
         </div>
-        <button type="submit">Create</button>
-        {state.error && <p style={{ color: "red" }}>{state.error}</p>}
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          Create
+        </button>
+        {state.error && <p className="text-red-600">{state.error}</p>}
       </form>
     </div>
   )
