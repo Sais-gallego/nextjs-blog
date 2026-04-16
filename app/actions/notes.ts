@@ -6,13 +6,19 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "../../lib/auth"
 import { addNote, toggleImportance } from "../services/notes"
 
-export const createNote = async (formData: FormData) => {
+export const createNote = async (
+  prevState: { error: string },
+  formData: FormData,
+) => {
   const session = await getServerSession(authOptions)
   if (!session) {
     redirect("/login")
   }
 
   const content = formData.get("content") as string
+  if (!content || content.length < 10) {
+    return { error: "Note content must be at least 10 characters long" }
+  }
   const important = formData.get("important") === "on"
   await addNote(content, important)
 
