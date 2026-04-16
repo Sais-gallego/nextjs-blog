@@ -2,8 +2,8 @@
 
 import { useActionState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { createNote } from "../../actions/notes"
-import { useNotification } from "../../components/NotificationContext"
+import { useNotification } from "@/app/components/NotificationContext"
+import { createNote } from "@/app/actions/notes"
 
 const NewNote = () => {
   const [state, formAction] = useActionState(createNote, {
