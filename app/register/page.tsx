@@ -1,11 +1,29 @@
-import Link from "next/link"
+"use client"
+
+import { useActionState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { registerUser } from "../actions/users"
+import { useNotification } from "../components/NotificationContext"
 
 export default function RegisterPage() {
+  const [state, formAction] = useActionState(registerUser, {
+    error: "",
+    success: false,
+  })
+  const { showNotification } = useNotification()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (state.success) {
+      showNotification("registered successfully")
+      router.push("/login")
+    }
+  }, [state, showNotification, router])
+
   return (
     <div>
       <h2>Register</h2>
-      <form action={registerUser}>
+      <form action={formAction}>
         <div>
           <label>
             Username
@@ -25,6 +43,7 @@ export default function RegisterPage() {
           </label>
         </div>
         <button type="submit">Register</button>
+        {state.error && <p style={{ color: "red" }}>{state.error}</p>}
       </form>
     </div>
   )
