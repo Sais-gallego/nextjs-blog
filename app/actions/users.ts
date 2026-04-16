@@ -1,8 +1,8 @@
 "use server"
 
 import bcrypt from "bcryptjs"
-import { db } from "../../db"
-import { users } from "../../db/schema"
+import { db } from "@/db"
+import { users } from "@/db/schema"
 
 export const registerUser = async (
   prevState: { error: string; success?: boolean },

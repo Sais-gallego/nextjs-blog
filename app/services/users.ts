@@ -1,6 +1,6 @@
 import { eq, sql } from "drizzle-orm"
-import { db } from "../../db"
-import { users, notes } from "../../db/schema"
+import { db } from "@/db"
+import { users, notes } from "@/db/schema"
 
 export const getUsers = async () => {
   return db.select().from(users)
