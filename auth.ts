@@ -6,6 +6,8 @@ import { db } from "./db"
 import { users } from "./db/schema"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  secret: process.env.NEXTAUTH_SECRET || "nextjs-course-secret-key-2026",
+  trustHost: true,
   providers: [
     Credentials({
       credentials: {
@@ -42,6 +44,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id
+        token.username = user.email
+      }
+      return token
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string
+        session.user.email = token.username as string
+      }
+      return session
+    },
+  },
   pages: {
     signIn: "/login",
   },

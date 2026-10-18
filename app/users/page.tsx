@@ -1,26 +1,29 @@
 import Link from "next/link"
-import { getUsers } from "../services/users"
+import { db } from "@/db"
 
-const Users = async () => {
-  const users = await getUsers()
+export const dynamic = "force-dynamic"
+
+export default async function UsersPage() {
+  const allUsers = await db.query.users.findMany({
+    with: { blogs: true },
+  })
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-4">Users</h2>
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold">Users</h2>
       <ul className="space-y-2">
-        {users.map((user) => (
-          <li key={user.id} className="border rounded p-3 hover:bg-gray-50">
+        {allUsers.map((u) => (
+          <li key={u.id} className="p-3 border rounded flex justify-between">
             <Link
-              href={`/users/${user.id}`}
-              className="text-blue-600 hover:underline"
+              href={`/users/${u.id}`}
+              className="text-blue-600 hover:underline font-medium"
             >
-              {user.name}
+              {u.name} ({u.username})
             </Link>
+            <span>{u.blogs.length} blogs</span>
           </li>
         ))}
       </ul>
     </div>
   )
 }
-
-export default Users

@@ -6,24 +6,51 @@ export const users = pgTable("users", {
   username: text("username").notNull().unique(),
   name: text("name").notNull(),
   passwordHash: text("password_hash").notNull().default(""),
+  apiToken: text("api_token"),
 })
 
-export const notes = pgTable("notes", {
+export const blogs = pgTable("blogs", {
   id: serial("id").primaryKey(),
-  content: text("content").notNull(),
-  important: boolean("important").notNull().default(false),
+  title: text("title").notNull(),
+  author: text("author").notNull(),
+  url: text("url").notNull(),
+  likes: integer("likes").notNull().default(0),
   userId: integer("user_id")
     .notNull()
-    .references(() => users.id),
+    .references(() => users.id, { onDelete: "cascade" }),
+})
+
+export const readingLists = pgTable("reading_lists", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  blogId: integer("blog_id")
+    .notNull()
+    .references(() => blogs.id, { onDelete: "cascade" }),
+  read: boolean("read").notNull().default(false),
 })
 
 export const usersRelations = relations(users, ({ many }) => ({
-  notes: many(notes),
+  blogs: many(blogs),
+  readingLists: many(readingLists),
 }))
 
-export const notesRelations = relations(notes, ({ one }) => ({
+export const blogsRelations = relations(blogs, ({ one, many }) => ({
   user: one(users, {
-    fields: [notes.userId],
+    fields: [blogs.userId],
     references: [users.id],
+  }),
+  readingLists: many(readingLists),
+}))
+
+export const readingListsRelations = relations(readingLists, ({ one }) => ({
+  user: one(users, {
+    fields: [readingLists.userId],
+    references: [users.id],
+  }),
+  blog: one(blogs, {
+    fields: [readingLists.blogId],
+    references: [blogs.id],
   }),
 }))

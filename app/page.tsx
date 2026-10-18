@@ -1,27 +1,20 @@
-const Home = () => {
+import Link from "next/link"
+
+export default function HomePage() {
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <div className="mb-4">
-        <h2 className="text-2xl font-bold mb-2">notes app</h2>
-        An example app for{" "}
-        <a
-          href="https://courses.mooc.fi/org/uh-cs/courses/full-stack-open-nextjs"
-          className="text-blue-600 hover:underline"
+    <div className="space-y-4">
+      <h1 className="text-3xl font-bold">Blog Application</h1>
+      <p className="text-gray-700">
+        Welcome to the Full Stack Open Next.js Blog Application.
+      </p>
+      <div className="flex gap-4">
+        <Link
+          href="/blogs"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
         >
-          Full Stack Open Next.js
-        </a>
-      </div>
-      <div>
-        See{" "}
-        <a
-          href="https://github.com/fullstack-hy2020/nextjs-notes"
-          className="text-blue-600 hover:underline"
-        >
-          https://github.com/fullstack-hy2020/nextjs-notes
-        </a>{" "}
-        for the source code
+          View Blogs
+        </Link>
       </div>
     </div>
   )
 }
-export default Home
